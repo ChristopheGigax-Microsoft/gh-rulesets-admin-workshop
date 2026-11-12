@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>02 Branch protection | From Settings to Safeguards</title><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/workshop.js" defer></script></head>
+<body data-lab="02"><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="../index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="../index.html#journey">Labs</a><a href="../ruleset-examples.html">Examples</a><a href="../troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">02 / Require the approved path</p><h1>Close the direct-push path.</h1>
+<h2>Purpose</h2><p>Reject a normal direct update, then complete a PR. Separately prove that deletion and a genuinely non-fast-forward push are blocked.</p>
+<h2>Starting checkpoint</h2><p>The exact-target ruleset from lab 1 is disabled. Your baseline PR merged with existing requirements satisfied; the optional workshop CI is introduced in Lab 4. Your clone is clean; verify <code>git status</code> and <code>git remote -v</code>. If inherited policy prevents the isolated direct-update tests below, record them as blocked rather than weakening it.</p>
+<h2>Configure, violate, comply</h2>
+<ol>
+<li>Activate <code>workshop-integration</code>. Keep Require a pull request, zero approvals, Restrict deletions, and Block force pushes selected. Do not enable Restrict updates: that would also block ordinary compliant PR merging for actors without bypass.</li>
+<li>Start a new feature branch from the latest remote integration branch. Commit a harmless note, then explicitly attempt to push that commit directly to integration.</li>
+</ol>
+<pre><code>git fetch origin
+git switch --create practice/pr-path origin/workshop/integration
+Add-Content practice.md 'A change that must take the PR path.'
+git add practice.md
+git commit -m "docs: practice protected integration"
+git push origin HEAD:refs/heads/workshop/integration</code></pre>
+<p>Expect a server rejection citing the PR requirement. Keep the output. A permissions error, network failure, or non-fast-forward Git error is not this evidence.</p>
+<ol start="3"><li>Push the same local commit to its feature branch, open a PR into <code>workshop/integration</code>, and merge normally with title <code>docs: practice protected integration</code>.</li></ol>
+<pre><code>git push -u origin practice/pr-path</code></pre>
+<h2>Isolate deletion and force-push rules</h2>
+<p>Create <code>workshop/destructive</code> from integration in the branch menu. Create a separate active branch ruleset <code>workshop-destructive</code> targeting that exact branch with <strong>only</strong> Restrict deletions and Block force pushes. No PR requirement and no bypass: otherwise the experiment could fail for the wrong reason.</p>
+<pre><code>git fetch origin
+git switch --create practice/history-test origin/workshop/destructive
+Add-Content practice.md 'Temporary history test.'
+git add practice.md
+git commit -m "docs: create disposable history"
+git push origin HEAD:refs/heads/workshop/destructive
+git push origin --delete workshop/destructive
+git push --force-with-lease origin HEAD~1:refs/heads/workshop/destructive</code></pre>
+<p>The first update is ordinary and succeeds; deletion is rejected; pushing the previous commit would remove the newly added commit and must be rejected as a non-fast-forward update. A <code>stale info</code> lease rejection is client-side concurrency protection, not ruleset evidence: fetch and inspect the remote before retrying.</p>
+<aside class="callout"><strong>Disposable branch only.</strong><p>Never substitute the default branch or a shared branch in these commands. Do not use reset or force pushes to remove the rejected PR-path commit; it remains safely on its feature branch.</p></aside>
+<details><summary>Solution and recovery</summary><p>Integration allows ordinary PR merges while direct pushes fail. The destructive test branch permits ordinary updates but rejects deletion and history rewrites. If the first direct push succeeds, inspect target and bypass settings before proceeding. Disable only the destructive-test ruleset when later cleaning up that branch.</p></details>
+<div class="checkpoint"><strong>Done when</strong><p>Show a PR-required rejection and successful PR merge, plus independent deletion and actual history-rewrite rejections on the disposable branch.</p></div>
+<section class="progress-panel"><button id="complete" type="button" hidden>Mark evidence as collected</button></section><p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="01-targeting.html">Previous: targeting</a><a href="03-reviews.html">Next: reviews</a></div>
+</main><footer>Prove the rule that caused the rejection, not just that something failed.</footer></body></html>

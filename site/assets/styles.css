@@ -1,0 +1,68 @@
+:root {
+  color-scheme: dark;
+  --bg: #0c1524;
+  --panel: #15243a;
+  --text: #edf2fb;
+  --muted: #becbde;
+  --accent: #85edce;
+  --border: #415571;
+  --warning: #ffda95;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 1rem/1.7 system-ui, sans-serif; }
+a { color: var(--accent); text-underline-offset: .22em; }
+a:hover { color: white; }
+:focus-visible { outline: 3px solid var(--warning); outline-offset: 4px; }
+.skip { position: absolute; top: -6rem; left: 1rem; padding: 1rem; background: var(--panel); z-index: 2; }
+.skip:focus { top: .5rem; }
+header { background: var(--panel); border-bottom: 1px solid var(--border); }
+.bar { max-width: 1180px; padding: 1rem 2rem; margin: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.brand { font-weight: 800; text-decoration: none; color: var(--text); }
+nav { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; }
+main { max-width: 1040px; margin: auto; padding: 3rem 2rem 5rem; }
+h1, h2, h3 { line-height: 1.2; letter-spacing: -.025em; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); max-width: 22ch; margin: .7rem 0 1.5rem; }
+h2 { font-size: 1.7rem; margin-top: 2.8rem; }
+h3 { font-size: 1.15rem; margin-top: 1.7rem; }
+.eyebrow, .number { color: var(--accent); font-weight: 750; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+.lead { color: var(--muted); font-size: 1.2rem; max-width: 72ch; }
+.chips, .pager { display: flex; flex-wrap: wrap; gap: .7rem 1rem; }
+.chip { border: 1px solid var(--border); border-radius: 2rem; padding: .2rem .8rem; color: var(--muted); font-size: .85rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.card { border: 1px solid var(--border); border-radius: .65rem; background: var(--panel); padding: 1.4rem; }
+.card h3 { margin: .5rem 0; }
+.card p { color: var(--muted); margin-bottom: 0; }
+.callout, .checkpoint, .activity { background: var(--panel); border-left: 4px solid var(--accent); margin: 1.5rem 0; padding: 1rem 1.3rem; }
+.callout { border-color: var(--warning); }
+.callout p, .checkpoint p { margin: .4rem 0; }
+li { margin: .6rem 0; }
+code { font: .9em/1.65 ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+pre { overflow: auto; border: 1px solid var(--border); padding: 1.2rem; border-radius: .4rem; background: #080f1c; }
+pre code { overflow-wrap: normal; }
+button, .button { font: inherit; font-weight: 700; background: var(--accent); color: var(--bg); border: 0; border-radius: .3rem; padding: .55rem 1rem; cursor: pointer; display: inline-block; text-decoration: none; }
+button:hover, .button:hover { background: #b6f9e4; color: var(--bg); }
+button:disabled { opacity: .7; cursor: not-allowed; }
+.copy { font-size: .85rem; margin-top: .5rem; }
+details { border: 1px solid var(--border); border-radius: .4rem; padding: 1rem 1.3rem; margin: 1.5rem 0; }
+summary { color: var(--accent); font-weight: 700; cursor: pointer; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+caption { text-align: left; color: var(--muted); margin-bottom: .5rem; }
+th, td { padding: .8rem; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { color: var(--accent); }
+.pager { justify-content: space-between; border-top: 1px solid var(--border); margin-top: 3rem; padding-top: 1.4rem; }
+.progress-panel { margin-top: 2rem; }
+.status { min-height: 1.7em; color: var(--muted); }
+footer { border-top: 1px solid var(--border); padding: 1.5rem; color: var(--muted); text-align: center; font-size: .85rem; }
+@media (max-width: 640px) {
+  main { padding: 2rem 1.2rem 3rem; }
+  .bar { padding: 1rem 1.2rem; }
+  pre { font-size: .85rem; }
+}
+@media print {
+  :root { color-scheme: light; --bg: white; --panel: white; --text: #111; --muted: #333; --accent: #15533e; --border: #777; --warning: #624200; }
+  header, footer, .pager, button, .progress-panel { display: none; }
+  main { padding: 0; }
+  h1 { font-size: 2.4rem; }
+  pre { white-space: pre-wrap; background: white; }
+}

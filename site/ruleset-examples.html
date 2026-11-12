@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Complete examples | From Settings to Safeguards</title><link rel="stylesheet" href="assets/styles.css"><script src="assets/workshop.js" defer></script></head>
+<body><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="prerequisites.html">Preflight</a><a href="index.html#journey">Labs</a><a href="troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">Self-contained reference</p><h1>Copy the whole example.</h1>
+<p class="lead">All reference policy bodies are embedded below. The optional CI workflow and validator are directly in <a href="labs/04-required-ci.html#ci-example">Lab 4</a>. No separate course repository access is required.</p>
+<aside class="callout"><strong>Inspect before applying.</strong><p>JSON examples start disabled and have no bypass actors. They are repository-level REST create request bodies, not live policies. The UI can create the same settings; use its import option only if available and compatible. Inspect the result, exact targets, and current API requirements before activation.</p></aside>
+<h2 id="integration">1. Integration branch</h2>
+<p>Lab 2's starting policy: require a PR but no approval yet. UI targets use branch names; JSON uses full refs.</p>
+<pre><code data-source="examples/rulesets/01-integration.json">{
+  "name": "workshop-integration",
+  "target": "branch",
+  "enforcement": "disabled",
+  "bypass_actors": [],
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/heads/workshop/integration"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    { "type": "deletion" },
+    { "type": "non_fast_forward" },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_approving_review_count": 0,
+        "required_review_thread_resolution": false
+      }
+    }
+  ]
+}
+</code></pre>
+<h2 id="reviewed-ci">2. Reviewed changes and required CI</h2>
+<p>Reference final shape after the <strong>optional paired route</strong> in labs 3 and 4. For solo work, change <code>required_approving_review_count</code> to <code>0</code> and <code>dismiss_stale_reviews_on_push</code> to <code>false</code> in this workshop example; keep PRs, conversation resolution, CI, and branch protections. Do not weaken existing or inherited requirements. <strong>Edit the existing integration ruleset</strong> rather than creating duplicate rulesets unintentionally. Run CI first. Substitute the actual check context for the customer-CI route. This portable body omits an account-specific integration ID; select the expected source in the UI when available.</p>
+<pre><code data-source="examples/rulesets/02-reviewed-ci.json">{
+  "name": "workshop-reviewed-ci",
+  "target": "branch",
+  "enforcement": "disabled",
+  "bypass_actors": [],
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/heads/workshop/integration"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    { "type": "deletion" },
+    { "type": "non_fast_forward" },
+    {
+      "type": "pull_request",
+      "parameters": {
+        "dismiss_stale_reviews_on_push": true,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_approving_review_count": 1,
+        "required_review_thread_resolution": true
+      }
+    },
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "required_status_checks": [{ "context": "PR title convention" }],
+        "strict_required_status_checks_policy": false
+      }
+    }
+  ]
+}
+</code></pre>
+<h2 id="linear">3. Linear-history overlay</h2>
+<p>Apply only with the separate baseline described in lab 5. Enable a compatible squash/rebase merge method before activation.</p>
+<pre><code data-source="examples/rulesets/03-linear-history.json">{
+  "name": "workshop-linear-overlay",
+  "target": "branch",
+  "enforcement": "disabled",
+  "bypass_actors": [],
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/heads/workshop/layering"],
+      "exclude": []
+    }
+  },
+  "rules": [{ "type": "required_linear_history" }]
+}
+</code></pre>
+<h2 id="tags">4. Stable workshop tags</h2>
+<p>Creation is deliberately not restricted. Update and deletion are. Review all downstream tag triggers before activating.</p>
+<pre><code data-source="examples/rulesets/04-tags.json">{
+  "name": "workshop-release-tags",
+  "target": "tag",
+  "enforcement": "disabled",
+  "bypass_actors": [],
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/tags/workshop-v*"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "update",
+      "parameters": { "update_allows_fetch_and_merge": false }
+    },
+    { "type": "deletion" }
+  ]
+}
+</code></pre>
+<h2 id="api">Optional CLI/API: inspect, export, compare, import</h2>
+<p>The core is UI-first. The following PowerShell commands require authenticated <code>gh</code> with authorized access to <strong>your selected repository</strong>. They only read until the explicitly marked POST. Replace the identity and ID; do not copy server-generated IDs, source metadata, or foreign bypass actor IDs into a create request.</p>
+<pre><code>$repo = 'OWNER/REPOSITORY'
+gh auth status
+gh api --paginate "repos/$repo/rulesets?includes_parents=true&amp;per_page=100"
+$id = 123
+gh api "repos/$repo/rulesets/$id" | Set-Content -Encoding utf8 ruleset-before.json
+gh api "repos/$repo/rules/branches/workshop%2Fintegration"
+</code></pre>
+<p>Parent-sourced rulesets may require reading their owning organization's endpoint or using the UI; a local repository export alone is not a backup of all inherited controls. Inspect <code>gh</code>'s exit status before treating an export file as a usable backup.</p>
+<p>Save a chosen embedded JSON example as <code>policy.json</code>. Inspect its exact workshop targets and disabled enforcement. In the explicitly approved repository only, creating a new draft is:</p>
+<pre><code>gh api --method POST "repos/$repo/rulesets" --input policy.json</code></pre>
+<p>Record the returned ID. Open the resulting draft in settings, compare it with your intent, and activate only after preflight. Existing exports are not guaranteed portable create bodies: retain documented request fields and resolve local actors/check sources. To compare two exports without ignoring meaningful policy differences:</p>
+<pre><code>gh api "repos/$repo/rulesets/$id" | Set-Content -Encoding utf8 ruleset-after.json
+git diff --no-index -- ruleset-before.json ruleset-after.json</code></pre>
+<p>A diff exit code of 1 means differences were found. Compare target, enforcement, bypass, and rule parameters; server timestamps and IDs are not policy changes. Do not POST an export blindly or overwrite an existing rule as an accidental duplicate.</p>
+<h2>Authoritative references</h2>
+<p><a href="https://docs.github.com/en/rest/repos/rules">GitHub REST rulesets</a> &middot; <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets">Available rules</a> &middot; <a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits 1.0.0</a></p>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="index.html">Home</a><a href="solutions.html">Solutions and evidence</a></div>
+</main><footer>Examples are learning aids, not proof of live configuration or enforcement.</footer></body></html>

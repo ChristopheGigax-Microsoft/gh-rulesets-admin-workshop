@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Preflight | From Settings to Safeguards</title><link rel="stylesheet" href="assets/styles.css"><script src="assets/workshop.js" defer></script></head>
+<body><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="index.html#journey">Labs</a><a href="ruleset-examples.html">Examples</a><a href="instructor.html">Facilitator</a></nav></div></header>
+<main id="main"><p class="eyebrow">Before the first rule</p><h1>Use a repository you are authorized to administer.</h1>
+<p class="lead">You administer your own repository and can work through the workshop alone. A partner is optional. No organization-wide policy change is required.</p>
+<h2>Access and capability check</h2>
+<ol>
+<li>Choose a customer-approved repository: an existing real repository is welcome; a disposable repository is optional. Confirm owner/name, visibility, and authorized exercise scope. If participants share a repository, assign each participant or pair unique workshop refs and ruleset names, and adapt all examples accordingly.</li>
+<li>Confirm repository admin access and the ability to open <strong>Settings &rarr; Rules &rarr; Rulesets</strong> (labels may vary). If unavailable, check your role, plan, visibility, and inherited restrictions.</li>
+<li>If working with an optional partner, confirm they have approved <strong>write</strong> access to the repository; they need no admin access. Solo participants perform the actions themselves. A PR author cannot approve their own PR, so follow <a href="labs/03-reviews.html#solo">Lab 3's solo route</a> for review-specific limitations.</li>
+<li>If using CI, verify its access and runner availability. The optional <a href="labs/04-required-ci.html#ci-example">Lab 4 PR-title example</a> uses Actions, pinned checkout, <code>ubuntu-24.04</code>, and Node.js 22+. Check action policy or adapt to an approved runner when choosing that route.</li>
+<li>Use an approved Git client and GitHub authentication. Verify you can push and fetch. Never put tokens in commands, source, screenshots, or the evidence ledger.</li>
+<li>Inspect the repository's <code>/rules</code> page, inherited rulesets, and legacy branch protection. Ask the facilitator about restrictions that prevent these labs; do not disable parent policy.</li>
+<li>Check that no branch/tag/deployment workflows can publish or deploy from <code>workshop/</code> or <code>workshop-v*</code>. The supplied workflow performs no deployment.</li>
+</ol>
+<h2>Feature boundaries</h2>
+<div class="table-wrap"><table><caption>Verify entitlement in the actual workshop organization before delivery</caption><thead><tr><th>Track</th><th>Requirement / fallback</th></tr></thead><tbody>
+<tr><td>Core branch/tag rules, PRs and checks</td><td>Repository-admin rights, eligible repository/plan (Team or Enterprise for private organization repositories), working Actions or selected CI. Another eligible writer is needed only for counted-approval experiments, not for solo participation.</td></tr>
+<tr><td>Disabled and active enforcement</td><td>Core uses these two states; disabled is not evaluation or evidence collection.</td></tr>
+<tr><td>Evaluate and Rule Insights</td><td>Enterprise-only extension; confirm availability. Use actual active rejection evidence for the core.</td></tr>
+<tr><td>Organization-level policies</td><td>Enterprise extension and authorized organization administrator; participant admin rights cannot override inherited rules.</td></tr>
+<tr><td>Push rulesets</td><td>Optional; confirm entitlement and private/internal visibility support. They cover pushes across the repository/fork network, not one branch.</td></tr>
+<tr><td>Merge queue / signatures / code owners</td><td>Independent extensions with their own eligibility and setup. None is needed for the core CI lab.</td></tr>
+</tbody></table></div>
+<p>See <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets">GitHub ruleset documentation</a> and your organization's actual feature controls. If a capability is missing, record the blocker rather than treating an unavailable setting as configured.</p>
+<h2>Prepare the workshop refs, not a new project</h2>
+<ol>
+<li>Agree a harmless practice-file path. The examples use <code>practice.md</code>; if it already exists, choose another path and adapt commands throughout. Preserve existing source and workflows. No template or starter files are required.</li>
+<li>Create <code>workshop/integration</code> from an approved baseline using the branch menu. Check inherited policy and downstream triggers first. Do not modify the default branch or its protections for workshop setup.</li>
+<li>Use your existing checkout with a clean working tree, or clone the approved repository. Inspect its remote, fetch the branch, and create a feature branch. Commands below show a fresh clone and use PowerShell syntax; replace <code>OWNER/REPOSITORY</code>, the local directory, and any ref/file names with your approved choices.</li>
+</ol>
+<pre><code>git clone https://github.com/OWNER/REPOSITORY.git
+Set-Location REPOSITORY
+git remote -v
+git fetch origin
+git switch --create workshop/integration --track origin/workshop/integration
+git switch --create practice/baseline
+Add-Content practice.md 'Baseline workshop observation.'
+git add practice.md
+git commit -m "docs: record baseline"
+git push -u origin practice/baseline</code></pre>
+<p>Open a human-authored PR with <strong>base</strong> <code>workshop/integration</code> and title <code>docs: record baseline</code>. Inspect it yourself, satisfy existing repository checks and reviews, and merge normally before lab 1. A partner review is optional unless existing policy requires an eligible independent approval. In that case obtain it or record the merge as blocked; do not weaken that policy. Choose and prove the workshop CI gate in <a href="labs/04-required-ci.html">Lab 4</a>; its optional code example need not be installed during preflight.</p>
+<aside class="callout"><strong>Read before every command.</strong><p>Destructive experiments use only explicitly approved disposable refs, even in a real repository. Never target production/shared refs, alter existing protections, or enable deployment as a side effect. If your clone has local work, do not overwrite or reset it; inspect its state and use a separate clone if needed. If policy prevents an experiment, record it as blocked or use an authorized demonstration.</p></aside>
+<h2>Prepare your evidence ledger</h2>
+<p>Keep this inside the approved repository or customer-approved notes, not a third-party service. Record lab, ruleset name/source, target ref, actor/bypass state, attempted operation, expected result, actual rejection or check/PR link, correction, and successful result. Capture only non-sensitive information.</p>
+<div class="checkpoint"><strong>Ready when</strong><p>You can administer rules, push a harmless commit, and complete a PR under existing requirements, or have recorded a specific policy blocker. You know the inherited restrictions, agreed disposable ref names, and whether you are working solo or with a partner. Lab 4 will establish the selected CI gate's baseline.</p></div>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="index.html">Home</a><a href="labs/01-targeting.html">Next: targeting</a></div>
+</main><footer>Configuration access is not an automatic bypass grant.</footer></body></html>

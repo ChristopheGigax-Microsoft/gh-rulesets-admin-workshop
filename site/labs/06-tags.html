@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>06 Tags | From Settings to Safeguards</title><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/workshop.js" defer></script></head>
+<body data-lab="06"><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="../index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="../index.html#journey">Labs</a><a href="../ruleset-examples.html#tags">Tag example</a><a href="../troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">06 / Stable release identity</p><h1>A new version, not a moving tag.</h1>
+<h2>Purpose</h2><p>Allow first creation of a workshop tag while rejecting later updates and deletion. Distinguish Git ref stability from release artifacts or device deployment.</p>
+<h2>Starting checkpoint</h2><p>Review all tag-triggered workflows and downstream hooks. The namespace <code>workshop-v*</code> must have no production side effects. Confirm <code>workshop-v1</code> and <code>workshop-v2</code> do not already exist. Never overwrite another participant's tags.</p>
+<h2>Configure</h2><p>Create an active <strong>tag ruleset</strong>, <code>workshop-release-tags</code>, include <code>workshop-v*</code>, no exclusions or bypass. Select <strong>Restrict updates</strong> and <strong>Restrict deletions</strong>. Leave <strong>Restrict creations</strong> off: otherwise the first tag would also be blocked.</p>
+<h2>Create, challenge, version</h2>
+<p>On a clean worktree, create the first lightweight tag at the approved remote integration commit.</p>
+<pre><code>git fetch origin
+git tag workshop-v1 origin/workshop/integration
+git push origin refs/tags/workshop-v1
+git ls-remote --tags origin "workshop-v*"</code></pre>
+<p>Record the accepted remote object ID. Create a different local commit on a disposable feature branch, then attempt an explicit update and deletion:</p>
+<pre><code>git switch --create practice/tag-update origin/workshop/integration
+Add-Content practice.md 'Next synthetic release observation.'
+git add practice.md
+git commit -m "docs: prepare next workshop version"
+git push --force origin HEAD:refs/tags/workshop-v1
+git push origin --delete workshop-v1
+git ls-remote --tags origin "workshop-v*"</code></pre>
+<p>Both operations must be rejected by the tag ruleset and the original remote tag object ID must remain unchanged. The explicit force option gets past Git's normal tag-update refusal; a local Git refusal alone would not demonstrate server-side policy.</p>
+<p>Instead of changing the old tag, create the next version at the new local commit:</p>
+<pre><code>git tag workshop-v2 HEAD
+git push origin refs/tags/workshop-v2
+git ls-remote --tags origin "workshop-v*"</code></pre>
+<aside class="callout"><strong>Synthetic tag identity only.</strong><p>The new tag's commit is not a validated production release. Branch rules do not automatically validate tag creation; CI evidence and release publication need separate controls. No release or deployment is part of this lab.</p></aside>
+<details><summary>Solution and recovery</summary><p>Compare <a href="../ruleset-examples.html#tags">the tag policy</a>: update and deletion are restricted; creation is not. If initial creation fails, check inherited rules and Restrict creations. If no mutation is attempted because HEAD equals the tag target, make a distinct harmless commit first. Preserve remote output before disabling the workshop tag rule for final cleanup.</p></details>
+<div class="checkpoint"><strong>Done when</strong><p>Show successful initial creation, update/deletion server rejections, an unchanged original tag object ID, and a successfully created next-version tag.</p></div>
+<section class="progress-panel"><button id="complete" type="button" hidden>Mark evidence as collected</button></section><p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="05-layering.html">Previous: layering</a><a href="07-bypass.html">Next: bypass</a></div>
+</main><footer>Tag protection does not certify the tagged code or the release bytes.</footer></body></html>

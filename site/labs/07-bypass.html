@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>07 Bypass | From Settings to Safeguards</title><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/workshop.js" defer></script></head>
+<body data-lab="07"><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="../index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="../index.html#journey">Labs</a><a href="../ruleset-examples.html#api">Export / API</a><a href="../troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">07 / Exceptions with an exit</p><h1>Bypass with intent. Restore control.</h1>
+<h2>Purpose</h2><p>Demonstrate that configuration rights and bypass permissions are different, then practice restoring a narrowly scoped exception.</p>
+<h2>Starting checkpoint</h2><p>Export your selected repository's rulesets using the UI export option, or the <a href="../ruleset-examples.html#api">read-only API commands</a>. Create a disposable <code>workshop/bypass</code> branch from integration. Confirm no inherited restriction prevents this exercise and the owner approves the temporary admin-role grant below. Otherwise record the exercise as blocked or use an authorized demonstration.</p>
+<h2>Establish the blocked baseline</h2>
+<ol>
+<li>Create an active <code>workshop-bypass</code> branch ruleset targeting only <code>workshop/bypass</code>, with Require a pull request, one required approval, and no bypass actors.</li>
+<li>Open a human-authored PR into that branch with a harmless change and valid title. Do not request approval yet. Observe that even as repository admin, you cannot normally merge without the required review.</li>
+<li>Attempt a direct push of its feature commit to the target branch. Record the PR-required rejection. Keep the commit on the feature branch; do not rewrite history.</li>
+</ol>
+<h2>Add one explicit exception</h2>
+<ol>
+<li>Edit only this disposable rule. Add the Repository administrators role to bypass, choosing <strong>For pull requests only</strong> rather than Always allow. If PR-only bypass is unavailable, record the feature gap and use a facilitator demonstration; do not silently substitute a broad always-bypass permission.</li>
+<li>Retry the direct push: it must still be blocked because the exception is PR-only. Inspect the merge box and use the explicit bypass merge action on the unapproved PR. Confirm the exception succeeds and keep the PR record and available bypass reason/evidence.</li>
+<li>Immediately remove the admin bypass actor and save. Create a second unapproved PR with a different harmless change. Verify normal merging is blocked again.</li>
+<li>Solo: keep this second PR unmerged to preserve evidence that approval enforcement is restored; export the final rule with one required approval and no bypass, then close the PR without merging when ready to clean up. With an optional eligible partner: obtain their approval and merge normally, then re-export. Do not approve your own PR or add bypass back to manufacture a normal merge.</li>
+</ol>
+<aside class="callout"><strong>A laboratory role grant, not least-privilege production advice.</strong><p>The admin role covers every admin of this repository; the exercise ruleset must target only the agreed disposable ref and the grant must be removed immediately. Never add this exception to an existing production rule. Production exceptions should use appropriately scoped approved actors, ownership, justification, and review. A bypass in one ruleset does not bypass all other applicable rulesets.</p></aside>
+<h2>Practice configuration recovery</h2>
+<p>Imagine a required check was misspelled. As repository administrator, inspect your workshop rule, compare the export and actual check name, and correct that specific setting. Editing your own policy is configuration recovery, not proof that developers can comply with it. Never disable inherited rules or leave all safeguards disabled as a shortcut.</p>
+<details><summary>Solution and recovery</summary><p>The expected sequence is admin blocked &rarr; explicit PR-only bypass merge &rarr; grant removed &rarr; admin blocked again. You can perform that sequence yourself. An optional eligible reviewer can then prove the normal approved-merge path; alone, mark that final approval case not exercised and leave the restored policy intact. If the first operation succeeds without a bypass actor, inspect another matching rule, a privileged identity, or a target mismatch. If an overlay still blocks the bypass merge, identify it rather than broadening permissions. Preserve a blocked/unavailable checkpoint if preflight cannot support the feature.</p></details>
+<div class="checkpoint"><strong>Done when</strong><p>Show before/after exports, the exceptional PR record, a direct push still rejected during PR-only bypass, and enforcement restored after removing the grant. Solo: record the second PR's restored review blocker and normal approved merging as not exercised. Paired: also show a normal approved merge. If bypass mode is unavailable, record the limitation rather than checking off a successful bypass.</p></div>
+<section class="progress-panel"><button id="complete" type="button" hidden>Mark evidence as collected</button></section><p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="06-tags.html">Previous: tags</a><a href="08-capstone.html">Next: your own policy</a></div>
+</main><footer>Exceptions need a scope, an owner, evidence, and removal.</footer></body></html>

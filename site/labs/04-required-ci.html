@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>04 Required CI | From Settings to Safeguards</title><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/workshop.js" defer></script></head>
+<body data-lab="04"><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="../index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="../index.html#journey">Labs</a><a href="#ci-example">Complete CI example</a><a href="../troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">04 / A real red-to-green policy</p><h1>Turn a check into a gate.</h1>
+<h2>Purpose</h2><p>Require a genuine CI result in your ruleset, demonstrate blocked merging, then correct the input without weakening the policy. Choose either route below.</p>
+<h2>Starting checkpoint</h2><p>Complete your chosen Lab 3 route on <code>workshop/integration</code>. Solo participants keep zero required approvals in their own workshop rule and satisfy conversation requirements themselves; paired participants obtain the required review. Preserve all existing/inherited requirements and record a blocker if an unavailable reviewer is still required. Choose a CI route below and establish an executed passing baseline before requiring its check. On the experiment PR, satisfy all effective requirements and record the selected job/check name and reporting source, not just the workflow name.</p>
+<h2>Path A: bring your own customer CI</h2>
+<ol>
+<li>Choose an existing build, test, linter, or policy validator that runs against this workshop PR. Record its trigger, exact check name, expected reporting integration, safe failure input, and restoration procedure. Observe an executed passing baseline before requiring it.</li>
+<li>Confirm the experiment cannot deploy or affect production. If no safe reproducible failure is available, use Path B instead.</li>
+<li>Add the exact check under <strong>Require status checks to pass</strong> in <code>workshop-integration</code>. Select the expected integration if offered; leave up-to-date-branch enforcement off for this focused exercise.</li>
+<li>Introduce the agreed failing input. Confirm the check executes and fails for the intended reason and the merge box blocks merging.</li>
+<li>Restore correct content, push, obtain a renewed review if the diff changed, and verify an executed passing check and successful normal merge.</li>
+</ol>
+<p>Do not remove existing customer checks. A build error is legitimate for a chosen build check; an unrelated runner/network outage does not prove your intended validation.</p>
+<h2 id="ci-example">Path B: optional PR-title CI code example</h2>
+<p>If you do not use existing customer CI, create the two files below at the indicated paths in your selected repository. No starter folder or new project is needed. Use an approved PR into <code>workshop/integration</code> to install them, preserving existing workflows and satisfying current reviews/checks. If either path already exists, agree distinct filenames and update the workflow command instead of overwriting it. The <code>pull_request</code> trigger runs for all PR bases unless you scope it to your agreed workshop branches; confirm that scope with the repository owner before installation.</p>
+<p>Merge the setup PR, then open a new practice PR from the updated integration branch so the workflow and validator are present on both base and head. Do not select the check as required until it has actually passed. These examples validate a Conventional Commits-style PR-title header, not application code:</p>
+<pre><code>&lt;type&gt;[optional scope][optional !]: &lt;description&gt;</code></pre>
+<h3><code>.github/workflows/pr-title.yml</code></h3>
+<pre><code data-example="pr-title-workflow">name: Workshop PR policy
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-title:
+    name: PR title convention
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Validate PR title as data
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node scripts/validate-pr-title.mjs
+</code></pre>
+<p>The hosted runner supplies Node.js. For an approved alternative runner, ensure Node.js 22+ is available. The only external action is pinned checkout; verify your organization's action policy permits it.</p>
+<h3><code>scripts/validate-pr-title.mjs</code></h3>
+<pre><code data-example="pr-title-validator">import { pathToFileURL } from "node:url";
+
+export function isConventionalTitle(title) {
+  if (typeof title !== "string" || /[\r\n]/u.test(title)) return false;
+  const header = /^(?&lt;type&gt;[\p{L}][\p{L}\p{N}-]*)(?:\((?&lt;scope&gt;[^()\r\n]+)\))?!?: (?&lt;description&gt;\S[^\r\n]*)$/u.exec(title);
+  return Boolean(header &amp;&amp; (header.groups.scope === undefined || header.groups.scope.trim()));
+}
+
+if (process.argv[1] &amp;&amp; import.meta.url === pathToFileURL(process.argv[1]).href) {
+  if (isConventionalTitle(process.env.PR_TITLE)) {
+    console.log("PR title matches the workshop header convention.");
+  } else {
+    console.error("Invalid PR title. Expected &lt;type&gt;[optional scope][optional !]: &lt;description&gt;.");
+    console.error("Example: docs: update workshop guide");
+    process.exitCode = 1;
+  }
+}
+</code></pre>
+<p>This practical header validator accepts letter-led types, letters/digits/hyphens, optional nonblank scope without parentheses, optional <code>!</code>, colon + space, and a nonblank single-line description. It supports other types/casing, but is not a full Conventional Commits parser or a semantic validator.</p>
+<h3>Local diagnostic, not live enforcement</h3>
+<pre><code>$env:PR_TITLE = 'Update documentation'
+node scripts/validate-pr-title.mjs
+$env:PR_TITLE = 'docs: update workshop guide'
+node scripts/validate-pr-title.mjs</code></pre>
+<p>First run exits 1 with a format error; second exits 0. For the live lab, rename the actual PR and wait for fresh runs. Do not paste PR text into shell source. The workflow passes the title through an environment variable and never prints untrusted title text as a workflow command.</p>
+<h3>Prove the required check</h3>
+<div class="table-wrap"><table><caption>Title-format examples</caption><thead><tr><th>PR title</th><th>Expected</th></tr></thead><tbody>
+<tr><td><code>docs: update workshop guide</code></td><td>Pass</td></tr>
+<tr><td><code>feat(rules): add tag protection</code></td><td>Pass, with scope</td></tr>
+<tr><td><code>fix(ci)!: change check contract</code></td><td>Pass, with breaking marker</td></tr>
+<tr><td><code>Maintenance: refresh examples</code></td><td>Pass; no fixed type allowlist or lowercase-only policy</td></tr>
+<tr><td><code>Update documentation</code></td><td>Fail: missing prefix</td></tr>
+<tr><td><code>docs:update guide</code> / <code>docs: </code></td><td>Fail: missing separator space / empty description</td></tr>
+</tbody></table></div>
+<ol>
+<li>With title <code>docs: update workshop guide</code>, observe a passing <strong>PR title convention</strong> job on the new practice PR. The workflow and validator must exist on its base and head branches.</li>
+<li>Add that exact check to <code>workshop-integration</code>'s required status checks. Select GitHub Actions as the expected source if available. Keep all other review requirements satisfied.</li>
+<li>Edit only the PR title to <code>Update documentation</code>. Wait for the <strong>new edited-event run</strong>, open its logs, and find the meaningful format error. Confirm merge is blocked by that check.</li>
+<li>Edit the title to <code>docs: update workshop guide</code>. Wait for a new passing run on the same head commit. Confirm the merge box is clear, then merge normally.</li>
+<li>On another practice PR, push a harmless diff-changing commit and confirm <code>synchronize</code> revalidates the current title. Renew approval as required. This tests that title validation also follows code changes.</li>
+</ol>
+<aside class="callout"><strong>Be precise about what was proved.</strong><p><a href="https://www.conventionalcommits.org/en/v1.0.0/">Conventional Commits 1.0.0</a> defines commit messages. We adopt its header convention for PR titles; we do not validate commit history, bodies, footers, semantic meaning, or full specification compliance. The validator's documented practical syntax permits letter-led types, optional nonblank scopes and breaking markers, and a nonblank single-line description. Type allowlists and lowercase-only rules are additional team policies.</p></aside>
+<h2>Understand the CI boundary</h2>
+<p>The workflow listens for <code>opened</code>, <code>edited</code>, <code>synchronize</code>, <code>reopened</code>, and <code>ready_for_review</code>. Title-only edits must run again; rerunning an old event can reuse the old title. Avoid rapid edits while runs are queued, and match the newest completed run to its event. This is a simple workshop check, not an atomic production guarantee that title metadata cannot change between a run and a merge.</p>
+<p>The title enters the script through an environment variable, never executable interpolation. The workflow uses read-only repository permissions and no secrets. A required check is not tamper-proof if contributors can change its workflow or validator: production policy also needs workflow governance. A passing PR title does not guarantee the final squash-commit subject; configure and review that separately.</p>
+<details><summary>Solution and recovery</summary><p>Keep the requirement selected throughout red-to-green. A missing check or skipped validator is not an executed failure. If title edits do not create a run, inspect <code>edited</code> in the workflow event list. If the merge box uses the wrong context, compare the actual job name with the selected required check. If older green is still shown, wait for the newest event and capture both the run and merge-box evidence; do not claim enforcement was proved.</p></details>
+<div class="checkpoint"><strong>Done when</strong><p>Record the chosen route, exact check/source, baseline green, meaningful red, blocked merge, corrected green, and compliant merge. The PR-title route must show fresh runs for title-only edits on the same head commit and for a subsequent code push.</p></div>
+<section class="progress-panel"><button id="complete" type="button" hidden>Mark evidence as collected</button></section><p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="03-reviews.html">Previous: reviews</a><a href="05-layering.html">Next: layering</a></div>
+</main><footer>Do not manufacture green by skipping checks, hiding failures, or dropping requirements.</footer></body></html>

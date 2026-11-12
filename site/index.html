@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="A hands-on GitHub rulesets administration workshop using customer-approved repositories, solo or optional paired exercises, and observable enforcement."><title>From Settings to Safeguards</title><link rel="stylesheet" href="assets/styles.css"></head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="bar"><a class="brand" href="index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="prerequisites.html">Preflight</a><a href="#journey">Labs</a><a href="troubleshooting.html">Troubleshooting</a><a href="instructor.html">Facilitator</a></nav></div></header>
+<main id="main">
+<p class="eyebrow">GitHub administration / Repository rulesets</p>
+<h1>Your repository. Your policy. Prove it works.</h1>
+<p class="lead">Build safeguards you can explain. Configure your own rules, deliberately challenge them, read the rejection, and complete the same change through the approved path.</p>
+<div class="chips"><span class="chip">Your approved repository</span><span class="chip">Solo or optional partner</span><span class="chip">UI-first</span><span class="chip">No application required</span></div>
+<p><a class="button" href="prerequisites.html">Prepare your repository</a></p>
+<aside class="callout"><strong>Real repository, isolated experiments.</strong><p>Use an existing customer-approved repository or, optionally, a disposable one. Agree unique workshop refs and exact policy targets before starting. Keep production/default-branch protections, existing workflows, and inherited policy intact; never run destructive experiments on production refs.</p></aside>
+<h2>The experiment behind every lab</h2>
+<p>Work through the actions yourself; a partner is optional. Only counted approvals and stale-approval dismissal need another eligible reviewer, because GitHub prevents authors approving their own PRs. <a href="labs/03-reviews.html#solo">Lab 3's solo route</a> explains what you can prove alone and how to continue without claiming those approval cases passed.</p>
+<p><strong>Predict &rarr; configure &rarr; violate &rarr; inspect &rarr; comply &rarr; prove.</strong> A saved setting is not evidence. Keep the rejected operation and successful recovery on your agreed workshop refs. No secrets, real deployment, firmware toolchain, or organization-owner role is needed.</p>
+<h2 id="journey">The learning journey</h2>
+<div class="grid">
+<article class="card"><span class="number">01 / Scope</span><h3><a href="labs/01-targeting.html">Know what your policy targets</a></h3><p>Ruleset types, enforcement, patterns, exclusions, and inherited protections.</p></article>
+<article class="card"><span class="number">02 / Branches</span><h3><a href="labs/02-branches.html">Close the direct-push path</a></h3><p>Require PRs and reject deletion and real history rewrites.</p></article>
+<article class="card"><span class="number">03 / Reviews</span><h3><a href="labs/03-reviews.html">Make review meaningful</a></h3><p>Solo review blockers and conversations; optional counted and stale-approval experiments with a reviewer.</p></article>
+<article class="card"><span class="number">04 / CI</span><h3><a href="labs/04-required-ci.html">Turn a check into a gate</a></h3><p>Bring your CI or validate a Conventional Commits-style PR title.</p></article>
+<article class="card"><span class="number">05 / Diagnosis</span><h3><a href="labs/05-layering.html">Trace overlapping rules</a></h3><p>Demonstrate additive policies, not imaginary priorities.</p></article>
+<article class="card"><span class="number">06 / Tags</span><h3><a href="labs/06-tags.html">Keep release references stable</a></h3><p>Create a tag, reject mutation, then create the next version.</p></article>
+<article class="card"><span class="number">07 / Exceptions</span><h3><a href="labs/07-bypass.html">Bypass with intent. Restore control.</a></h3><p>Separate configuration access, exceptional merge rights, and recovery.</p></article>
+<article class="card"><span class="number">08 / Assessment</span><h3><a href="labs/08-capstone.html">Design a policy of your own</a></h3><p>Implement a scenario and challenge your assumptions yourself or with an optional partner.</p></article>
+</div>
+<h2>Choose the CI, not a new toolchain</h2>
+<p>Lab 4 accepts a customer-selected check with a safe reproducible failure. Its optional self-contained code example checks PR titles: <code>Update documentation</code> fails; <code>docs: update workshop guide</code> passes. Both routes must demonstrate blocked and allowed merging.</p>
+<h2>Keep the useful references nearby</h2>
+<p><a href="labs/04-required-ci.html#ci-example">Lab 4 CI code example</a> &middot; <a href="ruleset-examples.html">JSON policies</a> &middot; <a href="solutions.html">Solutions and evidence ledger</a> &middot; <a href="extensions.html">Optional advanced tracks</a> &middot; <a href="instructor.html#rehearsal">Live rehearsal checklist</a></p>
+<p>Core labs use repository-level rules. Enterprise Evaluate, organization inheritance, push restrictions, and merge queues are separately capability-gated. Unsupported features are recorded as skipped, never passed.</p>
+</main><footer>Static, self-contained course. No accounts collected, telemetry, backend, or external assets.</footer>
+</body></html>

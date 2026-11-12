@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>05 Layering | From Settings to Safeguards</title><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/workshop.js" defer></script></head>
+<body data-lab="05"><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="../index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="../index.html#journey">Labs</a><a href="../ruleset-examples.html#linear">Overlay example</a><a href="../troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">05 / Effective policy, not priority</p><h1>Trace overlapping rules.</h1>
+<h2>Purpose</h2><p>Prove that rulesets aggregate. Disabling one rule does not remove another rule or override inherited policy.</p>
+<h2>Starting checkpoint</h2><p>Create <code>workshop/layering</code> from integration in the branch menu. Confirm squash or rebase merging is enabled before requiring linear history; change repository-wide merge settings only with owner approval. Record inherited rules; this isolated direct-update experiment requires a disposable branch where no parent PR-only rule applies.</p>
+<h2>Configure two independent policies</h2>
+<ol>
+<li>Create <code>workshop-layer-baseline</code>, active, exact target <code>workshop/layering</code>, no bypass. Select only Restrict deletions and Block force pushes. Ordinary direct updates intentionally remain allowed on this isolated branch.</li>
+<li>Create <code>workshop-linear-overlay</code>, same exact target, active, empty bypass, and <strong>only Require linear history</strong>. Compare the <a href="../ruleset-examples.html#linear">disabled JSON example</a> before activation.</li>
+<li>View applicable rules for that branch. Predict why an ordinary linear commit would pass, a merge commit would fail, and deletion would fail regardless of the overlay.</li>
+</ol>
+<h2>Challenge the overlay with an actual merge commit</h2>
+<p>From a clean clone state, create a side commit and a local no-fast-forward merge. These names are new disposable local branches.</p>
+<pre><code>git fetch origin
+git switch --create practice/layer-side origin/workshop/layering
+Add-Content practice.md 'Side change for layering.'
+git add practice.md
+git commit -m "docs: prepare layering side change"
+git switch --create practice/layer-base origin/workshop/layering
+git merge --no-ff practice/layer-side -m "docs: create disposable merge commit"
+git log -1 --format="%h %p %s"
+git push origin HEAD:refs/heads/workshop/layering</code></pre>
+<p>The log must show two parents. Expect rejection for linear history, not PR approval, check failure, or insufficient access.</p>
+<h2>Change one variable</h2>
+<ol>
+<li>Disable only <code>workshop-linear-overlay</code>. Push the same local merge commit again. It should succeed because it is a fast-forward update of the remote ref, even though its history includes a merge.</li>
+<li>With the overlay still disabled, attempt the branch deletion below. It must still be rejected by the baseline ruleset.</li>
+<li>Re-enable the overlay. Add one ordinary note commit on your current local branch and push it to layering. This new linear commit should succeed. Existing previously accepted merge commits are not retroactively removed.</li>
+</ol>
+<pre><code>git push origin HEAD:refs/heads/workshop/layering
+git push origin --delete workshop/layering</code></pre>
+<p>After re-enabling the overlay:</p>
+<pre><code>Add-Content practice.md 'Linear update after restoring the overlay.'
+git add practice.md
+git commit -m "docs: restore linear development"
+git push origin HEAD:refs/heads/workshop/layering</code></pre>
+<details><summary>Solution and recovery</summary><p>There is no priority ordering: the effective policy is the union, with the most restrictive version of duplicate constraints applying. The same ref can also have inherited rules and branch protection. If PR-only inheritance prevents this isolation, record the experiment as blocked or use an authorized demonstration; do not remove parent policy or require the customer to move repositories. Do not introduce approval requirements into this isolated direct-update experiment; it works solo.</p></details>
+<div class="checkpoint"><strong>Done when</strong><p>Show a genuine merge-commit rejection, success of that same update after disabling only the overlay, persistent baseline deletion protection, and an allowed linear update after restoration.</p></div>
+<section class="progress-panel"><button id="complete" type="button" hidden>Mark evidence as collected</button></section><p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="04-required-ci.html">Previous: required CI</a><a href="06-tags.html">Next: tags</a></div>
+</main><footer>A ruleset cannot loosen another applicable ruleset.</footer></body></html>

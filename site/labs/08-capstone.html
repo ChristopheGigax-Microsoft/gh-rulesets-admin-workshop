@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>08 Your policy | From Settings to Safeguards</title><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/workshop.js" defer></script></head>
+<body data-lab="08"><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="../index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="../index.html#journey">Labs</a><a href="../solutions.html#ledger">Evidence ledger</a><a href="../extensions.html">Extensions</a></nav></div></header>
+<main id="main"><p class="eyebrow">08 / Design, challenge, defend</p><h1>Your rules. Your explanation.</h1>
+<h2>Purpose</h2><p>Choose and defend a policy rather than reproduce a reference configuration. Test it yourself or invite an optional partner to challenge whether what you intended is what GitHub actually enforces.</p>
+<h2>Starting checkpoint</h2><p>The core lab evidence is collected or explicitly marked blocked. Temporary bypass grants are removed. Export your baseline. Choose a new exact-target workshop branch <code>workshop/capstone</code>; do not accidentally overlap the earlier experiment refs.</p>
+<h2>Choose a scenario</h2>
+<div class="grid">
+<article class="card"><h3>Small product team</h3><p>Fast feature delivery, one meaningful review, an enforced CI check, and stable integration history. Explain when strict up-to-date checks would help or slow the team.</p></article>
+<article class="card"><h3>Firmware maintenance team</h3><p>Review-controlled maintenance changes and stable version tags. No firmware compilation required; explain what branch and tag protections do not prove about an actual release.</p></article>
+<article class="card"><h3>Documentation team</h3><p>Simple contribution flow with clear PR titles, resolved conversations, and no unnecessary toolchain. Explain your review burden and emergency-change procedure.</p></article>
+</div>
+<h2>Build your own test matrix</h2>
+<ol>
+<li>Write a short policy statement: intended users, target refs, required PR/review/CI behavior, allowed operations, and any justified exceptions. Choose at least three controls including a real required check. Solo examples: require PRs, require CI, and prevent branch deletion, with zero approvals in your own workshop rule; conversation resolution is another testable choice. With an eligible partner, include a required approval. Preserve existing/inherited policy either way.</li>
+<li>For each selected control, write one allowed and one denied operation. Ensure the denied case isolates that control rather than failing first for a different rule.</li>
+<li>Create the ruleset disabled, inspect targets and inheritance, then activate it. Do not import a finished answer without understanding each setting.</li>
+<li>Execute the challenge cases yourself with no bypass grants. Optionally have a partner repeat them using their own write-level identity, never your credentials. Record the actor and role: your admin-actor results alone do not prove behavior for a separate write-only actor.</li>
+<li>Diagnose unexpected outcomes by reading effective rules, bypass state, check identity, and review requirements. Correct your design and repeat the affected cases.</li>
+<li>Complete a compliant PR merge. Export the final rulesets and record the actual check source, target refs, exceptions, policy rationale, and both outcomes for every control.</li>
+<li>Keep the proven policy on the agreed workshop target. Propose any production/default-branch rollout separately through the customer's change process; do not apply it there as part of this workshop.</li>
+</ol>
+<h2>Defend the policy</h2><p>Explain what the repository admin can reconfigure, what developers can bypass, which inherited rules remain, what CI actually validates, and how to recover without erasing safeguards. Explain one trade-off you deliberately did not turn into a rule.</p>
+<details><summary>Assessment guide, not a single answer</summary><p>A good answer is small, testable, and consistent with the scenario. Three sensible controls with real evidence beat many untested toggles. A policy that cannot be satisfied by the available participants is not complete. Use the <a href="../solutions.html#ledger">evidence ledger</a> and retain failed/blocked checkpoints honestly.</p></details>
+<div class="checkpoint"><strong>Done when</strong><p>You can explain your final policy, each selected control has allowed/denied evidence, a compliant PR merged, exports match the settings, and no unintended bypass remains. Record solo or paired participation and the tested actor roles. An optional partner can independently challenge the result; do not claim independent-review or write-only-actor evidence you did not collect.</p></div>
+<section class="progress-panel"><button id="complete" type="button" hidden>Mark evidence as collected</button></section><p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="07-bypass.html">Previous: bypass</a><a href="../instructor.html#cleanup">Finish: safe cleanup</a></div>
+</main><footer>Optional advanced modules are not substitutes for core enforcement evidence.</footer></body></html>

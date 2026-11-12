@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>03 Reviews | From Settings to Safeguards</title><link rel="stylesheet" href="../assets/styles.css"><script src="../assets/workshop.js" defer></script></head>
+<body data-lab="03"><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="../index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="../index.html#journey">Labs</a><a href="../solutions.html">Solutions</a><a href="../troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">03 / Collaboration as a gate</p><h1>Make review meaningful.</h1>
+<h2>Purpose</h2><p>Understand missing-approval and conversation blockers. With an optional reviewer, also demonstrate that approval covers a particular change, not any future content on a branch.</p>
+<h2>Starting checkpoint</h2><p>Lab 2's PR path works. Open a new human-authored PR with a real change to <code>practice.md</code>, base <code>workshop/integration</code>, and a valid title. Work solo using the route below, or use the paired route if an eligible reviewer has accepted write access.</p>
+<h2 id="solo">Solo route: inspect the gates yourself</h2>
+<ol>
+<li>Export your current workshop ruleset. In your own exact-target <code>workshop-integration</code> rule, require <strong>one approval</strong> and <strong>Require conversation resolution before merging</strong>, with no bypass. Inspect your unapproved PR and record the missing-review blocker. GitHub will not count an approval from the PR author; admin rights do not change this.</li>
+<li>After capturing that blocker, set required approvals back to <strong>zero</strong> and leave stale-approval dismissal off in this workshop-created rule only, leaving the PR and conversation requirements active. This is a declared change of exercise configuration, not successful approval evidence. Do not change pre-existing or inherited requirements; if they still require another reviewer, record the affected steps as blocked.</li>
+<li>Add your own inline comment on a changed line in the PR's Files changed view and submit it as a comment, not an approval. Leave the thread unresolved. With other requirements satisfied, inspect the merge box and record the conversation-resolution blocker.</li>
+<li>Reply to or address the comment, resolve the thread, and confirm the conversation blocker disappears. Merge normally if all effective requirements are satisfied.</li>
+<li>Record counted approval and dismissal of a stale approval as <strong>not exercised: another eligible reviewer required</strong>. Leave your workshop rule at zero required approvals for the solo CI lab. Keep conversation resolution enabled and bypass empty.</li>
+</ol>
+<p>You can inspect your own diff, comment, resolve conversations, and test the missing-approval gate yourself. These actions are not an independent approving review. No second account, shared credentials, or bypass is needed for the solo route.</p>
+<h2>Optional paired route: counted and stale approvals</h2>
+<ol>
+<li>Edit <code>workshop-integration</code>. Require <strong>one approval</strong>, enable <strong>Dismiss stale pull request approvals when new commits are pushed</strong> and <strong>Require conversation resolution before merging</strong>. Leave code-owner and last-push-approval requirements off for this isolated experiment.</li>
+<li>Inspect the merge box before your partner approves. Record the missing-review blocker. The PR author cannot satisfy their own review requirement.</li>
+<li>Your partner adds an inline review comment on a changed line and submits an approving review. Confirm the approval counts but the unresolved conversation blocks merging.</li>
+<li>Reply to the comment and resolve the thread. Check that the blocker disappears. Do not merge yet.</li>
+<li>Push a new commit that changes the diff in <code>practice.md</code>. A title edit or empty commit is not the stale-review experiment. Observe the prior approval dismissed and merge blocked again.</li>
+<li>Request a fresh partner approval on the latest change, verify all conversations are resolved, and merge through the normal PR path.</li>
+<li>Optionally swap author/reviewer roles on the partner's agreed workshop refs so each participant practices configuring and reviewing.</li>
+</ol>
+<div class="activity"><strong>Explain the choices.</strong><p>Why is dismissing stale approval different from requiring approval of the most recent reviewable push? Which trade-off would your team choose? Neither requires two reviewers for this core lab.</p></div>
+<details><summary>Solution and recovery</summary><p>The paired sequence is missing approval &rarr; counted approval with unresolved thread &rarr; resolved thread &rarr; diff-changing push dismisses approval &rarr; fresh approval permits merge. The solo sequence is missing approval &rarr; declared workshop-only change to zero approvals &rarr; own unresolved thread blocks merging &rarr; resolved thread permits merging, subject to all other requirements. Compare with <a href="../ruleset-examples.html#reviewed-ci">the reviewed-CI policy and its solo adaptation</a>, but add the CI requirement only after lab 4's baseline run.</p><p>If an optional reviewer's approval does not count, verify write access and PR authorship. If the UI requires unexpected additional approvals, inspect all inherited policies and any unattributed automation-PR requirements. Use human-authored PRs for the core, not a bot workaround.</p></details>
+<div class="checkpoint"><strong>Done when</strong><p>Solo: record the missing-approval blocker, declared return to zero approvals, unresolved/resolved conversation evidence, and compliant merge (or an existing-policy blocker). Mark counted/stale approvals not exercised. Paired: show each distinct blocker, a stale dismissed approval after a real diff change, and a merged PR with a fresh counted review and no unresolved threads. Record the route explicitly.</p></div>
+<section class="progress-panel"><button id="complete" type="button" hidden>Mark evidence as collected</button></section><p id="status" class="status" role="status" aria-live="polite"></p>
+<div class="pager"><a href="02-branches.html">Previous: branches</a><a href="04-required-ci.html">Next: required CI</a></div>
+</main><footer>Solo participation is supported; self-inspection is not an independent approval.</footer></body></html>

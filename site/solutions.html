@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Solutions and evidence | From Settings to Safeguards</title><link rel="stylesheet" href="assets/styles.css"></head>
+<body><a class="skip" href="#main">Skip to content</a><header><div class="bar"><a class="brand" href="index.html">From Settings to Safeguards</a><nav aria-label="Main"><a href="index.html#journey">Labs</a><a href="ruleset-examples.html">Complete examples</a><a href="troubleshooting.html">Troubleshooting</a></nav></div></header>
+<main id="main"><p class="eyebrow">Answer key / observable outcomes</p><h1>Evidence, not green checkboxes.</h1>
+<p class="lead">Use these checkpoints to recover and explain. They are not permission to skip experiments or broaden bypass access.</p>
+<div class="table-wrap"><table><caption>Core evidence and recovery map</caption><thead><tr><th>Lab</th><th>Successful evidence</th><th>Not equivalent</th></tr></thead><tbody>
+<tr><td><a href="labs/01-targeting.html">1. Targeting</a></td><td>Correct pattern predictions; final exact integration target; disabled rule; known inherited policy.</td><td>Assuming all globs match nested refs or calling Disabled an evaluation mode.</td></tr>
+<tr><td><a href="labs/02-branches.html">2. Branches</a></td><td>PR-required direct-push rejection, compliant merge, isolated deletion and actual history-rewrite rejections.</td><td>Network denial, stale lease, or a force-flagged push that was actually fast-forward.</td></tr>
+<tr><td><a href="labs/03-reviews.html">3. Reviews</a></td><td>Solo: missing-approval blocker, declared change to zero approvals in the workshop rule, unresolved/resolved own thread, compliant merge; counted/stale approvals not exercised. Paired: also counted approval, diff-changing push dismisses review, renewed approval permits merge.</td><td>Calling self-inspection an independent approval, or calling a reduced approval count proof that approval was satisfied.</td></tr>
+<tr><td><a href="labs/04-required-ci.html">4. CI</a></td><td>Named check/source, baseline green, meaningful red blocks merge, corrected green permits merge. PR-title route: fresh title-edit runs on the same head and a push-triggered revalidation.</td><td>Missing check, skipped job, removed requirement, manually fabricated status, or rerun of an old title event.</td></tr>
+<tr><td><a href="labs/05-layering.html">5. Layering</a></td><td>Two-parent merge rejected; same update accepted with only overlay disabled; baseline deletion remains blocked; new linear commit allowed after restoration.</td><td>Treating the last-created ruleset as overriding all others.</td></tr>
+<tr><td><a href="labs/06-tags.html">6. Tags</a></td><td>Initial creation succeeds; real retarget/delete attempts rejected; object ID unchanged; next tag succeeds.</td><td>Git refusing a non-force tag update before the server rules evaluate it.</td></tr>
+<tr><td><a href="labs/07-bypass.html">7. Exceptions</a></td><td>Admin blocked without bypass; PR-only exception recorded; direct push still blocked; exception removed; review blocker restored. Solo stops with restored block/export; optional eligible reviewer proves normal approved merging.</td><td>Leaving Always allow on, changing inherited policy, or claiming unsupported bypass mode or unexercised approvals succeeded.</td></tr>
+<tr><td><a href="labs/08-capstone.html">8. Your policy</a></td><td>Scenario rationale, at least three controls including CI, isolated allow/deny evidence, self-executed or optional partner challenges, merged PR, matching export. Record actual actor roles.</td><td>A large JSON file with no actual operations or explanation, or claiming untested independent-review/write-only-actor behavior.</td></tr>
+</tbody></table></div>
+<h2 id="ledger">Copyable evidence ledger</h2>
+<p>Keep this in your approved repository notes or issue. Do not store tokens, customer source, or private logs outside approved systems.</p>
+<pre><code>Lab / status: complete | blocked | skipped
+Route: solo | paired
+Approval cases not exercised / reason:
+Repository / agreed workshop refs:
+Ruleset name / source:
+Target branch or tag:
+Actor role / bypass state:
+Prediction:
+Attempted operation:
+Actual rejection or blocker:
+PR / run / commit evidence:
+Correction:
+Successful compliant result:
+Remaining limitations:
+Final export / restoration:</code></pre>
+<h2>Reference final integration policy</h2>
+<p>After labs 3 and 4, both routes require a PR, resolved review threads, the selected CI check, no force pushes, and no deletion, with empty bypass. The paired route adds one approval and dismissed stale reviews. The solo route uses zero approvals in its workshop-created rule and does not claim counted/stale-approval evidence. <a href="ruleset-examples.html#reviewed-ci">Reviewed-CI JSON</a> shows the paired shape; adapt it as documented for solo work, select the actual reporting source, and preserve existing/inherited requirements.</p>
+<p>The separate destructive, layering, bypass, and tag rules deliberately target different refs. They are not a recommendation to multiply overlapping production rules without a reason.</p>
+<h2>Final questions</h2>
+<ol><li>What failed, and how do you know which rule caused it?</li><li>Which identities can edit the rule versus bypass it?</li><li>Can a repository admin weaken an inherited organization rule?</li><li>What does your required check validate, and what can it not guarantee?</li><li>How would you recover without deleting every protection?</li></ol>
+<div class="pager"><a href="ruleset-examples.html">Examples</a><a href="instructor.html#cleanup">Cleanup and handoff</a></div>
+</main><footer>A blocked checkpoint is an honest result, not a passed exercise.</footer></body></html>
