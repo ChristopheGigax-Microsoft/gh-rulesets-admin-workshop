@@ -1,0 +1,19 @@
+{
+  "name": "workshop-release-tags",
+  "target": "tag",
+  "enforcement": "disabled",
+  "bypass_actors": [],
+  "conditions": {
+    "ref_name": {
+      "include": ["refs/tags/workshop-v*"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "update",
+      "parameters": { "update_allows_fetch_and_merge": false }
+    },
+    { "type": "deletion" }
+  ]
+}
