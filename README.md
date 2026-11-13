@@ -63,16 +63,16 @@ Correspondence:
 | `site/instructor.html`, `site/solutions.html`, `site/troubleshooting.html` | The three same-purpose annex pages |
 | `examples/rulesets/*.json` | Embedded examples plus `moaw/assets/rulesets/*.json` |
 
-### Publication gate: not published yet
+### Publication checklist
 
-The source repository is currently private. MOAW's direct GitHub loading requires publicly accessible source; `published: false` only controls catalog visibility, **not confidentiality**.
+MOAW's direct GitHub loading requires publicly accessible source. The workshop declares `published: true`; this does not change repository visibility or publish unpushed changes. The flag controls catalog visibility, **not confidentiality**.
 
 Before making **this same repository** public:
 
-1. Rehearse the workshop on authorized refs, set a positive `duration_minutes` in `moaw/workshop.md`, and confirm rights to distribute the material. Supply author/contact metadata separately if submitting a catalog entry. The draft intentionally leaves duration unset rather than inventing it.
+1. Rehearse the workshop on authorized refs, confirm the estimated `duration_minutes: 180` in `moaw/workshop.md`, and confirm rights to distribute the material. Supply author/contact metadata separately if submitting a catalog entry.
 2. Review all material that would become public: current files, complete Git history, other branches/tags, and GitHub issues, discussions, releases and attachments. A clean working tree alone does not make historical or hosted content safe to expose. Any credential or private/customer content found blocks publication; do not rewrite history automatically.
 3. Keep `site.zip` as a local-only archive. It is ignored specifically, not deleted; it is not an input for MOAW. Ensure no temporary files, local dependencies or archives are staged.
-4. Run all checks below and `node scripts/check-moaw.mjs --publication`. The latter intentionally fails while duration is unset, even with `published: false`; it checks document readiness, not permission to publish or absence of sensitive data.
+4. Run all checks below and `node scripts/check-moaw.mjs --publication`. The latter requires a positive duration, even with `published: false`; it checks document readiness, not permission to publish or absence of sensitive data.
 5. Review the diff, then commit/push and change repository visibility **only on explicit request**, after reviewing GitHub's visibility-change warnings. Confirm `git status --short` is empty after the approved commit; do not reset, stash or delete work to force a clean status.
 6. Once public and pushed to `main`, verify anonymous loading, all steps, annexes and assets from the remote source. GitHub content caching can delay updates.
 
@@ -84,7 +84,7 @@ https://aka.ms/ws?src=gh:ChristopheGigax-Microsoft/gh-rulesets-admin-workshop/ma
 
 Use the `aka.ms` link rather than hard-coding `moaw.dev`; MOAW announces that domain's retirement in 2027. No copy or new repository is required for the chosen publication route. If you later decide to keep this repository private, copy only the self-contained `moaw` folder yourself to an approved public source, then update the default `source` values in the Markdown and the link checker, or share links with a `vars=source:...` override. Recheck all links at the new location.
 
-Catalog listing is optional and separate from direct-link access: when requested, set `published: true` and propose an entry in MOAW's `packages/database/external.yml`. There is no course-site deployment workflow to add.
+Catalog listing is optional and separate from direct-link access: `published: true` is set in the workshop metadata; propose an entry in MOAW's `packages/database/external.yml` to request listing. There is no course-site deployment workflow to add.
 
 Format reference: [official MOAW authoring guide](https://github.com/microsoft/moaw/blob/main/workshops/create-workshop/workshop.md).
 

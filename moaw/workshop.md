@@ -1,12 +1,12 @@
 ---
-published: false
+published: true
 type: workshop
 title: From Settings to Safeguards
 short_title: GitHub rulesets administration
 description: Configure, challenge, inspect, and prove repository rulesets in an approved repository, solo or with an optional partner.
 level: intermediate
-# Set a measured duration after rehearsal, before publication.
-duration_minutes: null
+# Estimated delivery duration; confirm during rehearsal.
+duration_minutes: 180
 tags: github, administration, rulesets, pull requests, ci
 navigation_levels: 2
 navigation_numbering: false
